@@ -46,4 +46,26 @@
   b. ShadingModelsMaterial.ush (GBuffer中添加自定义数据)
 8.基础着色实现(光照渲染):
   a. BasePassPixelShader.usf
+  b. ClusteredDeferredShadingPixelShader.usf (新添加的ShadingModel并入光照计算)
+  c. ToonShadersCommon.ush (自定义的脚本，主要用来放编码解码函数，为了压缩数据体积, 添加到 Engine\Shaders\Private\ 目录下)
+  d. DeferredShadingCommon.ush (#include "ToonShadersCommon.ush")
+  e. MaterialTemplate.ush (添加模板函数)
+  f. ShadingModels.ush (卡通渲染修改函数文件，添加在函数IntegrateBxDF 上方,这里就是添加渲染模型算法的地方)
+  g. DeferredLightingCommon.ush (后向渲染光照计算入口)
+9.其他一些处理：
+  a. MaterialIRToHLSLTranslator.cpp
+  b. ShaderGenerationUtil.cpp
+
   
+10.添加自定义Pass实现描边:
+  添加Mesh Draw Pass：
+    1.Mesh Draw Pass的Processor类
+    2.定义VS和PS的类，以及Shader的实现
+    3.抵用RDG的Render函数
+  10.1. Mesh Draw Pass的开发
+    a. MeshPassProcessor.h (定义Pass枚举; 修改静态检查中Pass的数量)
+    b. 创建新的.h文件和.cpp文件，用来存放新的Processor类和Shader类的实现(可参照Custom Depth Pass):
+      b1. OutlinePassRendering.h (实现Processor类的声明，包含一个构造函数和两个成员函数; VS和PS两个Shader类的实现)
+      b2. OutlinePassRendering.cpp (将对应的Shader文件绑定到这个Shader类上，这样在编译之后UE才能找到对应的Shader文件; 路径不需要加Shaders文件夹)
+
+     
